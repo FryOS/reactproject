@@ -1,59 +1,59 @@
-// function Hero(props) {
-//     let count = 0
-//     function handleClick() {
-//         count =+ 1;
-//     }
-//     return (
-//         <div className="cointainer">
-//             <div className="count">{count}</div>
-//             <img src={props.imageURL} onClick={handleClick} />
-//             <h1>{props.title}</h1>
-//             <p>{props.subtitle}</p>
+var ImageCounter = function(props) {
+    return (
+        <div className="image-counter">
+            <div className="count">{props.count}</div>
+            <img src={props.imageUrl} onClick={props.onCount} />
+        </div>
+    );
+}
 
-//     </div>
-//     );
-// }
-
-const Hero = React.createClass({
-    getInitialState: function(){
+var Hero = React.createClass({
+    getInitialState: function() {
         return {
-            count:0
+            count: 0
         };
     },
-    handleClick: function() {
-        this.setState({
-            count: this.state.count + 1
-        });
+
+    handleClick: function () {
+        this.setState({ count: this.state.count + 1 });
     },
-    render: function(){
+
+    render: function() {
         return (
-            <div className="cointainer">
-                <div className="count">{this.state.count}</div>
-                <img src={this.props.imageURL} onClick={this.handleClick} />
+            <div className="container">
+                <ImageCounter imageUrl={this.props.imageUrl} count={this.state.count} onCount={this.handleClick} />
                 <h1>{this.props.title}</h1>
                 <p>{this.props.subtitle}</p>
-
-        </div> 
+            </div>
         );
     }
 });
-ReactDOM.render(
-    <div>
-            <Hero 
-                title = "React"
-                imageURL = "Facebook-Logo.png"
-                subtitle = "Библиотека"
-                
-                
-                />
-                
-            <Hero 
-                title = "Angular"
-                imageURL = "Angular_full_color_logo.svg.png"
-                subtitle = "Библиотека для всего"
-                
-                
-            />    
-    </div>,
-    
-    document.getElementById('root'));
+
+var App = React.createClass({
+    render: function() {
+        return (
+            <div>
+                {this.props.heroes.map(function(hero) {
+                    return <Hero key={hero.id} title={hero.title} subtitle={hero.subtitle} imageUrl={hero.imageUrl} />
+                })}
+            </div>
+        );
+    }
+});
+
+var data = [
+    {
+        id: 1,
+        title: 'React',
+        subtitle: 'Библиотека для создания пользовательских интерфейсов',
+        imageUrl: 'Facebook-Logo.png'
+    },
+    {
+        id: 2,
+        title: 'Angular 2',
+        subtitle: 'Один фреймворк',
+        imageUrl: 'Angular_full_color_logo.svg.png'
+    }
+];
+
+ReactDOM.render(<App heroes={data} />, document.getElementById('root'));
